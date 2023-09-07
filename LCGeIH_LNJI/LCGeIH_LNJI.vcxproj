@@ -133,7 +133,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main_prac02.cpp" />
+    <ClCompile Include="main_prac03.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader_projection.fs" />
+    <None Include="shaders\shader_projection.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

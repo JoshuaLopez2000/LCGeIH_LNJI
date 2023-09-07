@@ -1,0 +1,13 @@
+Matrices
+
+a) Proyección
+	-Ortogonal
+	-Perspectiva
+
+b) Global o Vista
+	-Transformaciones geométricas
+
+c) Localo o modelo
+	-Transformaciones geométricas
+
+Me tengo que mover una unidad porque es lo que mide el cubo
