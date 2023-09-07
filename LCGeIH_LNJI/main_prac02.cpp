@@ -142,7 +142,6 @@ void myData()
 		//Nariz - boca
 		-0.11313f ,-0.68494f , 0.0f,		0.8f, 0.0f, 0.6f,//V36
 		0.11917f ,-0.68647f , 0.0f,			0.8f, 0.0f, 0.6f,//V37
-
 		0.14414f, -0.79295f, 0.0f,			0.8f, 0.0f, 0.6f,//V38
 		0.0f, -0.840f, 0.0f,				0.4f, 0.0f, 0.2f,//V39x
 		-0.14013f, -0.79549f, 0.0f,			0.8f, 0.0f, 0.6f,//V40
@@ -181,6 +180,12 @@ void myData()
 		0.14414f, -0.79295f, 0.0f,			0.0f, 0.0f, 0.0f,//V62 38
 		0.0f, -0.840f, 0.0f,				0.0f, 0.0f, 0.0f,//V63 39
 		-0.14013f, -0.79549f, 0.0f,			0.0f, 0.0f, 0.0f,//V64 40
+
+		//boca
+		0.0f, -0.840f, 0.0f,				0.5f, 0.0f, 0.5f,//V65 39x
+		-0.23438f, -0.88974f,0.0f,			0.5f, 0.0f, 0.5f,//V66 41x
+		-0.0f, -0.969f, 0.0f,				0.5f, 0.0f, 0.5f,//V67 42x
+		0.23481f, -0.88953f, 0.0f,			0.5f, 0.0f, 0.5f,//68 V43x
 	};
 
 	unsigned int indices[] =
@@ -206,6 +211,7 @@ void myData()
 		13, 8, 12, 15, 14,
 		17, 14, 15, 16, 36, 40,
 
+		
 		//Mitad Derecha
 		4 + 18, 7 + 18, 1 + 18, 0 + 18, 2 + 18, 5 + 18,
 		8 + 18, 7 + 18, 1 + 18, 3 + 18, 10 + 18, 11 + 18, 12 + 18, 13 + 18,
@@ -216,7 +222,7 @@ void myData()
 		//Frente
 		34, 28, 9, 10, 16, 36, 37,
 		39, 17, 41, 42, 43, 35, //39 pivote
-
+		
 		//Oreja L
 		45, 44, 46, 47,
 		//Oreja R
@@ -230,6 +236,8 @@ void myData()
 		//Nariz 
 		63, 64, 60, 61, 62,
 
+		//boca
+		65, 66, 67, 68,
 	};
 
 	glGenVertexArrays(2, VAO);
@@ -394,7 +402,8 @@ int main()
 
 		//Nariz
 		glDrawElements(GL_TRIANGLE_FAN, 5, GL_UNSIGNED_INT, (void*)(89 * sizeof(float)));
-
+		//Boca
+		glDrawElements(GL_TRIANGLE_FAN, 4, GL_UNSIGNED_INT, (void*)(94 * sizeof(float)));
 
 		glBindVertexArray(0);
 		glUseProgram(0);
