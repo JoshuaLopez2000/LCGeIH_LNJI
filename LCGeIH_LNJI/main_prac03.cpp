@@ -31,9 +31,10 @@ void myData(void);
 void getResolution(void);
 
 //For Keyboard
-float	movX = 0,
-		movY = 0,
-		movZ = -11;
+//Condiciones iniciales de objetos en pantalla
+float	movX = -5,
+		movY = 5,
+		movZ = -30;
 
 float	rotY = 0;
 
@@ -153,9 +154,83 @@ void myData()
 	glBindVertexArray(0);
 }
 
+void printEmj(float color[], int figura[], int tam, glm::mat4 modelOp, Shader myShader) {
+
+	int	i = 0;
+	float	x = 0.0f,
+			y = 0.0f;
+	for (i = 0; i <= tam; i++) {
+		switch (figura[i]) {
+		case 0:
+			x += 1.0f;
+			break;
+		case 1:
+			//aqui se genera el cubo actaul y se aumenta una posición a la derecha
+			modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f)); // Si se quisieran agregar más figuras entonces se tiene que afectar X como parametro (case: -1, x = inicio)
+			myShader.setMat4("model", modelOp);
+			myShader.setVec3("aColor", glm::vec3(color[0],color[1],color[2]));
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			x += 1;
+			break;
+		case -1:
+			x = 0.0f;
+			y -= 1.0f;
+			break;
+		default:
+			return;
+			break;
+		}
+	}
+}
 
 int main()
 {
+	float colorRGB[] = { 0, 0, 0, };
+	int emj0[] = {
+		0,0,0,0,1,1,1,-1,
+		0,0,0,0,0,1,1,1,-1,
+		0,0,0,0,1,1,1,1,1,-1,
+		0,0,0,0,1,1,1,1,1,-1,
+		0,0,0,1,1,1,1,1,1,1,1,-1,
+		0,0,1,0,0,0,1,0,0,0,1,-1,
+		0,0,1,0,0,0,1,0,0,0,1,-1,
+		0,0,1,0,0,0,1,0,0,0,1,-1,
+		0,1,1,0,0,0,1,0,0,0,1,1,-1,
+		0,1,1,1,1,1,1,1,1,1,1,1,-1,
+		1,1,1,1,0,0,0,0,0,1,1,1,1,-1,
+		1,1,1,1,1,0,0,0,1,1,1,1,1,-1,
+		0,1,1,1,1,1,1,1,1,1,1,1,0,-1,
+	};
+	int tam_emoji0 = sizeof(emj0) / sizeof(emj0[0]);
+
+	int ojosBoca_emj0[] = {
+		-1,
+		-1,
+		-1,
+		-1,
+		-1,
+		0,0,0,1,1,1,0,1,1,1,-1,
+		0,0,0,1,0,1,0,1,0,1,-1,
+		0,0,0,1,0,1,0,1,0,1,-1,
+		0,0,0,1,1,1,0,1,1,1,-1,
+		-1,
+		0,0,0,0,1,1,1,1,1,-1,
+		0,0,0,0,0,1,1,1,0,-1,
+	};
+	int tamOjos_emj0 = sizeof(ojosBoca_emj0) / sizeof(ojosBoca_emj0[0]);
+
+	int pupilas_emj0[] = {
+		-1,
+		-1,
+		-1,
+		-1,
+		-1,
+		-1,
+		0,0,0,0,1,0,0,0,1,-1,
+		0,0,0,0,1,0,0,0,1,
+	};
+	int tamPupilas_emj0 = sizeof(pupilas_emj0) / sizeof(pupilas_emj0[0]);
+
     // glfw: initialize and configure
     // ------------------------------
     glfwInit();
@@ -207,16 +282,16 @@ int main()
 
     // render loop
     // While the windows is not closed
-    while (!glfwWindowShouldClose(window))
-    {
-        // input
-        // -----
-        my_input(window);
+	while (!glfwWindowShouldClose(window))
+	{
+		// input
+		// -----
+		my_input(window);
 
-        // render
-        // Backgound color
-        glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Cambiar color de fondo (3 primeros)
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// render
+		// Backgound color
+		glClearColor(0.619f, 0.619f, 0.619f, 1.0f); // Cambiar color de fondo (3 primeros)
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Mi función de dibujo
 		/*******************************************/
@@ -228,7 +303,7 @@ int main()
 		myShader.setMat4("view", viewOp);
 		// note: currently we set the projection matrix each frame, but since the projection matrix rarely changes it's often best practice to set it outside the main loop only once.
 		myShader.setMat4("projection", projectionOp);
-		
+
 
 		glBindVertexArray(VAO[1]);	//Enable data array [1] | Se indica con que contenedor se va a trabajar (letra C en este caso)
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO[1]); //Only if we are going to work with index
@@ -241,106 +316,19 @@ int main()
 
 
 		/*-------------------Second figure-------------------*/
-		glBindVertexArray(VAO[0]);	//Enable data array [0] | Contenedor 0 son los vertices que referencían al cubo
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		myShader.setVec3("aColor", glm::vec3(0.47f, 0.2f, 0.0f)); //se queda activa hasta que sea sustituida con otra tonalidad | Cambiarla entonces para los ojos b/n
-		glDrawArrays(GL_TRIANGLES, 0, 36); //My Cube 1
+		glBindVertexArray(VAO[0]);//Enable data array [0] | Contenedor 0 son los vertices que referencían al cubo
 
-		// primer argumento es la referencia (mat4(1.0f), resto es la transformación )
-		//modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(2.5f, 4.5f, 0.0f));
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp); // se manda la información al shaer en forma de matriz 4x4 y se vacia el calculo que se acaba de hacer a la matriz del modelo
-		glDrawArrays(GL_TRIANGLES, 0, 36); //My Cube 2
+		//Sección que dibuja el "cuerpo" del primer emoji
+		colorRGB[0] = 0.47f; colorRGB[1] = 0.2f; colorRGB[2] = 0.0f;
+		printEmj(colorRGB, emj0, tam_emoji0, modelOp, myShader);
 
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//Dibujado del ojos y boca del primer emoji 
+		colorRGB[0] = 1.0f; colorRGB[1] = 1.0f; colorRGB[2] = 1.0f;
+		printEmj(colorRGB, ojosBoca_emj0, tamOjos_emj0, modelOp, myShader);
 
-		//Segunda linea
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, -1.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		//Tercera linea
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -2.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		//Cuarta Linea
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		//Quinta linea
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, -4.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
-		modelOp = glm::translate(modelOp, glm::vec3(1.0f, 0.0f, 0.0f));
-		myShader.setMat4("model", modelOp);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-
+		//Dibujando pupilas
+		colorRGB[0] = 0.0f; colorRGB[1] = 0.0f; colorRGB[2] = 0.0f;
+		printEmj(colorRGB, pupilas_emj0, tamPupilas_emj0, modelOp, myShader);
 		glBindVertexArray(0);
 		/*****************************************************************/
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
