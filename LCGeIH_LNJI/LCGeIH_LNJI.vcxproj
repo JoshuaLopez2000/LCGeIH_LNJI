@@ -133,7 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main_prac03.cpp" />
+    <ClCompile Include="main_prac04.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader_projection.fs" />
