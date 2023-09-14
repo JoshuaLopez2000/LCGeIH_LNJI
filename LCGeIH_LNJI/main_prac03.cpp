@@ -154,7 +154,7 @@ void myData()
 	glBindVertexArray(0);
 }
 
-void printEmj(float color[], int figura[], int tam, glm::mat4 modelOp, Shader myShader) {
+void printEmj(float color[], int figura[], int tam, glm::mat4 *modelOp, Shader myShader) {
 
 	int	i = 0;
 	float	x = 0.0f,
@@ -166,8 +166,8 @@ void printEmj(float color[], int figura[], int tam, glm::mat4 modelOp, Shader my
 			break;
 		case 1:
 			//aqui se genera el cubo actaul y se aumenta una posición a la derecha
-			modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f)); // Si se quisieran agregar más figuras entonces se tiene que afectar X como parametro (case: -1, x = inicio)
-			myShader.setMat4("model", modelOp);
+			*modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(x, y, 0.0f)); // Si se quisieran agregar más figuras entonces se tiene que afectar X como parametro (case: -1, x = inicio)
+			myShader.setMat4("model", *modelOp);
 			myShader.setVec3("aColor", glm::vec3(color[0],color[1],color[2]));
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 			x += 1;
@@ -186,6 +186,7 @@ void printEmj(float color[], int figura[], int tam, glm::mat4 modelOp, Shader my
 int main()
 {
 	float colorRGB[] = { 0, 0, 0, };
+	//partes cafés
 	int emj0[] = {
 		0,0,0,0,1,1,1,-1,
 		0,0,0,0,0,1,1,1,-1,
@@ -201,8 +202,8 @@ int main()
 		1,1,1,1,1,0,0,0,1,1,1,1,1,-1,
 		0,1,1,1,1,1,1,1,1,1,1,1,0,-1,
 	};
-	int tam_emoji0 = sizeof(emj0) / sizeof(emj0[0]);
 
+	//partes blancas
 	int ojosBoca_emj0[] = {
 		-1,
 		-1,
@@ -217,8 +218,8 @@ int main()
 		0,0,0,0,1,1,1,1,1,-1,
 		0,0,0,0,0,1,1,1,0,-1,
 	};
-	int tamOjos_emj0 = sizeof(ojosBoca_emj0) / sizeof(ojosBoca_emj0[0]);
 
+	//partes negras
 	int pupilas_emj0[] = {
 		-1,
 		-1,
@@ -229,7 +230,6 @@ int main()
 		0,0,0,0,1,0,0,0,1,-1,
 		0,0,0,0,1,0,0,0,1,
 	};
-	int tamPupilas_emj0 = sizeof(pupilas_emj0) / sizeof(pupilas_emj0[0]);
 
     // glfw: initialize and configure
     // ------------------------------
@@ -320,15 +320,15 @@ int main()
 
 		//Sección que dibuja el "cuerpo" del primer emoji
 		colorRGB[0] = 0.47f; colorRGB[1] = 0.2f; colorRGB[2] = 0.0f;
-		printEmj(colorRGB, emj0, tam_emoji0, modelOp, myShader);
+		printEmj(colorRGB, emj0, int(sizeof(emj0) / sizeof(emj0[0])), &modelOp, myShader);
 
 		//Dibujado del ojos y boca del primer emoji 
 		colorRGB[0] = 1.0f; colorRGB[1] = 1.0f; colorRGB[2] = 1.0f;
-		printEmj(colorRGB, ojosBoca_emj0, tamOjos_emj0, modelOp, myShader);
+		printEmj(colorRGB, ojosBoca_emj0, int(sizeof(ojosBoca_emj0) / sizeof(ojosBoca_emj0[0])), &modelOp, myShader);
 
 		//Dibujando pupilas
 		colorRGB[0] = 0.0f; colorRGB[1] = 0.0f; colorRGB[2] = 0.0f;
-		printEmj(colorRGB, pupilas_emj0, tamPupilas_emj0, modelOp, myShader);
+		printEmj(colorRGB, pupilas_emj0, int(sizeof(pupilas_emj0) / sizeof(pupilas_emj0[0])), &modelOp, myShader);
 		glBindVertexArray(0);
 		/*****************************************************************/
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
