@@ -29,7 +29,7 @@ void myData(void);
 void getResolution(void);
 
 //For Keyboard
-float	movX = 0.0f,
+float	movX = -20.0f,
 		movY = 0.0f,
 		movZ = -20.0f;
 
@@ -155,6 +155,11 @@ int main()
 	//Use "projection" in order to change how we see the information
 	projectionOp = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
+	glm::mat4 tempBrazo = glm::mat4(1.0f); //temporal (se pueden declarar más de uno
+	glm::mat4 tempPollo = glm::mat4(1.0f);
+	glm::mat4 tempPiernaL = glm::mat4(1.0f);
+	glm::mat4 tempPiernaR = glm::mat4(1.0f);
+
     // render loop
     // While the windows is not closed
     while (!glfwWindowShouldClose(window))
@@ -165,7 +170,7 @@ int main()
 
         // render
         // Background color
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(178.0f/255.0f, 223.0f / 255.0f, 224.0f / 219.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		//Mi bloque de dibujo
@@ -186,10 +191,10 @@ int main()
 		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(4.0f, 5.0f, 1.0f)); //factores de escala = valor final/valor inicial, mayor a 1 crece, 1 permanece, 0-1 se reduce, 0 se elimina
 		myShader.setMat4("model", modelOp); 
-		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f)); //Amarillo
 		glDrawArrays(GL_TRIANGLES, 0, 36);// cuerpo
 
-		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.75f, 0.0f));
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.5f+(0.5f/2.0f), 0.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.5f, 0.5f, 1.0f));
 		myShader.setMat4("model", modelOp);
 		myShader.setVec3("aColor", glm::vec3(1.0f, 0.0f, 0.0f));
@@ -231,6 +236,123 @@ int main()
 		myShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 0.0f));
 		glDrawArrays(GL_TRIANGLES, 0, 36); //Pie L
 
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f - (1.5f / 2.0f), (2.5f - (0.5f / 2.0f)), 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(1.5f, 0.5f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // ante brazo L
+
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(2.0f + (1.5f / 2.0f), (2.5f - (0.5f / 2.0f)), 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(1.5f, 0.5f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // ante brazo R
+
+		modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-2.0f - (1.5f / 2.0f) - (1.5f / 2.0f) + (1.0f / 2.0f), (2.5f - (0.5f / 2.0f) - (3.5f / 2.0f)), 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(1.0f, 3.5f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // brazo L
+
+		tempBrazo = modelOp = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f*(-2.0f - (1.5f / 2.0f) - (1.5f / 2.0f) + (1.0f / 2.0f)), (2.5f - (0.5f / 2.0f) - (3.5f / 2.0f)), 0.0f)); // se agrega la temporal para modelar la espada a partir de la mano/brazo
+		modelOp = glm::scale(modelOp, glm::vec3(1.0f, 3.5f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // brazo R
+
+		modelOp = glm::translate(tempBrazo, glm::vec3(0.0f, -(3.5f/2.0f)-(0.3f/2.0f ), 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(1.0f, 0.3f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(183.0f / 255.0f, 28.0f / 255.0f, 28.0f / 255.0f)); //Rojo oscuro
+		glDrawArrays(GL_TRIANGLES, 0, 36); // mango Espada
+
+		modelOp = glm::translate(tempBrazo, glm::vec3((1.0f / 2.0f) + (0.3f / 2.0f), -(3.5f / 2.0f) - (0.3f / 2.0f), 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.3f, 0.6f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(183.0f / 255.0f, 28.0f / 255.0f, 28.0f / 255.0f)); //Rojo oscuro
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Guarda Espada
+
+		modelOp = glm::translate(tempBrazo, glm::vec3((1.0f / 2.0f) + (0.3f) + (3.5f / 2.0f), -(3.5f / 2.0f) - (0.3f / 2.0f), 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(3.5f, 0.3f, 1.0f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(189.0f / 255.0f, 189.0f / 255.0f, 189.0f / 255.0f)); // Gris
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Espada
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// Figura Pollo
+
+		tempPollo = modelOp = glm::translate(glm::mat4(1.0f), glm::vec3( 20.0f, 0.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f, 5.0f, 2.5f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(255.0f / 255.0f, 238.0f / 255.0f, 88.0f / 255.0f)); // Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Cuerpo Pollo
+
+		modelOp = glm::translate(tempPollo, glm::vec3((2.5f/2.0f)+((2.5f * 0.30f)/2.0f), -(2.5f / 4.0f), -(2.5f / 4.0f)));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.30f, 5.0f*0.30f, 2.5f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(253.0f / 255.0f, 216.0f / 255.0f, 53.0f / 255.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Ala Derecha
+
+		modelOp = glm::translate(tempPollo, glm::vec3(-1.0f*((2.5f / 2.0f) + ((2.5f * 0.30f) / 2.0f)), -(2.5f / 4.0f), -(2.5f / 4.0f)));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f * 0.30f, 5.0f * 0.30f, 2.5f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(253.0f/255.0f,216.0f/255.0f,53.0f/255.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Ala Izquierda
+
+		modelOp = glm::translate(tempPollo, glm::vec3(0.0f, -(2.5f / 4.0f), (-2.5f / 2.0f) - (2.5f * 0.5/2.0f)));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f, 5.0f*0.30, 2.5f*0.5));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(255.0f / 255.0f, 238.0f / 255.0f, 88.0f / 255.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Cola inf
+
+		modelOp = glm::translate(tempPollo, glm::vec3(0.0f, (-(2.5f / 4.0f) + ((5.0*0.3f) / 2.0f)) + (5.0f * 0.10f) / 2, (-2.5f / 2.0f) - (2.5f * 0.5 / 2.0f)));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.70f, 5.0f * 0.10f, 2.5f * 0.5));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(225.0f / 255.0f, 245.0f / 255.0f, 157.0f / 255.0f)); //Amarillo
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Cola sup
+
+		tempPiernaR = modelOp = glm::translate(tempPollo, glm::vec3(2.5f/4.0f, -(5.0f / 2.0f) - (5.0f * 0.25f)/2.0f, (-2.5f / 2.0f) + (2.5f * 0.15f)/2.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.15f, 5.0f*0.25f , 2.5f*0.15f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Pierna R
+
+		tempPiernaL = modelOp = glm::translate(tempPollo, glm::vec3(-1*(2.5f / 4.0f), -(5.0f / 2.0f) - (5.0f * 0.25f) / 2.0f, (-2.5f / 2.0f) + (2.5f * 0.15f) / 2.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f * 0.15f, 5.0f * 0.25f, 2.5f * 0.15f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Pierna L
+
+		modelOp = glm::translate(tempPiernaL, glm::vec3(0.0f, ((-5.0f * 0.25f) / 2.0f) - (0.25f / 2.0f), -((2.5f * 0.15f)/2) + (2.5f * 0.5f) / 2.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.4f, 0.25f, 2.5f*0.5f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Pata L
+
+		modelOp = glm::translate(tempPiernaR, glm::vec3(-1.0f*0.0f, ((-5.0f * 0.25f) / 2.0f) - (0.25f / 2.0f), -((2.5f * 0.15f) / 2) + (2.5f * 0.5f) / 2.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f * 0.4f, 0.25f, 2.5f * 0.5f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Pata L
+
+		modelOp = glm::translate(tempPollo, glm::vec3(0.0f, 5.0f / 4.0f, 2.5f/2.0f + (2.5f * 0.80f)/2.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.6f, 5.0f*0.1, 2.5f*0.6f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Pico
+
+		modelOp = glm::translate(tempPollo, glm::vec3((2.5f / 2.0f) + (2.5f * 0.05f) / 2.0f, (5.0f / 4.0f), 2.5f / 4.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.1, 5.0f*0.1, 2.5f*0.1));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f)); //negro
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Ojo R
+
+		modelOp = glm::translate(tempPollo, glm::vec3(-1*((2.5f / 2.0f) + (2.5f * 0.05f) / 2.0f), (5.0f / 4.0f), 2.5f / 4.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(2.5f * 0.1, 5.0f * 0.1, 2.5f * 0.1));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(0.0f, 0.0f, 0.0f)); //negro
+		glDrawArrays(GL_TRIANGLES, 0, 36); // Ojo L
 		glBindVertexArray(0);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -265,17 +387,17 @@ void my_input(GLFWwindow *window)
 		movZ += 0.08f;
 
 	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-		rotX -= 0.5f;
+		rotX -= 0.2f;
 	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-		rotX += 0.5f;
+		rotX += 0.2f;
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-		rotY -= 0.5f;
+		rotY -= 0.2f;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-		rotY += 0.5f;
+		rotY += 0.2f;
 	if (glfwGetKey(window, GLFW_KEY_HOME) == GLFW_PRESS)
-		rotZ -= 0.5f;
+		rotZ -= 0.2f;
 	if (glfwGetKey(window, GLFW_KEY_END) == GLFW_PRESS)
-		rotZ += 0.5f;
+		rotZ += 0.2f;
 
 }
 
