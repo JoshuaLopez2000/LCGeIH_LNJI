@@ -29,9 +29,9 @@ void myData(void);
 void getResolution(void);
 
 //For Keyboard
-float	movX = -20.0f,
+float	movX = -10.0f,
 		movY = 0.0f,
-		movZ = -20.0f;
+		movZ = -30.0f;
 
 float	rotX = 0.0f,
 		rotY = 0.0f,
@@ -336,7 +336,7 @@ int main()
 		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
 		glDrawArrays(GL_TRIANGLES, 0, 36); // Pata L
 
-		modelOp = glm::translate(tempPollo, glm::vec3(0.0f, 5.0f / 4.0f, 2.5f/2.0f + (2.5f * 0.80f)/2.0f));
+		modelOp = glm::translate(tempPollo, glm::vec3(0.0f, 5.0f / 4.0f, 2.5f/2.0f + (2.5f * 0.6f)/2.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(2.5f*0.6f, 5.0f*0.1, 2.5f*0.6f));
 		myShader.setMat4("model", modelOp);
 		myShader.setVec3("aColor", glm::vec3(249.0f / 255.0f, 127.0f / 255.0f, 37.0f / 255.0f)); // Naranja
