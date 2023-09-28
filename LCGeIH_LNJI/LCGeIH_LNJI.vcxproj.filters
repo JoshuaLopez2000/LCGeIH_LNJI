@@ -15,7 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main_prac05.cpp">
+    <ClCompile Include="glad.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="main_prac06.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
