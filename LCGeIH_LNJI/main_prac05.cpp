@@ -42,7 +42,8 @@ float rotHombro = 0.0f,
 		rotDedo01 = 0.0f, 
 		rotDedo01a = 0.0f,
 		rotDedo02 = 0.0f,
-		rotDedo02a = 0.0f;
+		rotDedo03 = 0.0f,
+		rotDedo04 = 0.0f;
 
 void getResolution()
 {
@@ -224,7 +225,7 @@ int main()
 
 		//siguente figura según diagrama gerarquico (a partir de la figura B) 
 		
-		modelOp = glm::translate(refB, glm::vec3(1.25f, -0.35f, 0.375f)); // ahora la referencia es a partir de A, se toma A antes de la escala para que no afecte las transformacoinse 
+		modelOp = glm::translate(refB, glm::vec3(1.25f, -0.35f, 0.375f));
 		modelOp = glm::rotate(modelOp, glm::radians(rotDedo01), glm::vec3(0.0f, 1.0f, 0.0f));
 		refE = modelOp = glm::translate(modelOp, glm::vec3(0.25f, 0.0f, 0.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.5f, 0.3f, 0.25f));
@@ -232,22 +233,22 @@ int main()
 		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 0.0f));
 		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de E
 
-		modelOp = glm::translate(refE, glm::vec3(0.25f, 0.0f, 0.0f)); // ahora la referencia es a partir de A, se toma A antes de la escala para que no afecte las transformacoinse 
+		modelOp = glm::translate(refE, glm::vec3(0.25f, 0.0f, 0.0f));
 		modelOp = glm::rotate(modelOp, glm::radians(rotDedo01a), glm::vec3(0.0f, 1.0f, 0.0f));
 		modelOp = glm::translate(modelOp, glm::vec3(0.25f, 0.0f, 0.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.5f, 0.3f, 0.25f));
 		myShader.setMat4("model", modelOp);
 		myShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
-		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de f
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de F
 
 		
-		modelOp = glm::translate(refB, glm::vec3(2.5f/2.0f, 0.5f-(0.3f/2.0f), -0.375f)); // ahora la referencia es a partir de A, se toma A antes de la escala para que no afecte las transformacoinse 
+		modelOp = glm::translate(refB, glm::vec3(2.5f/2.0f, 0.5f-(0.3f/2.0f), -0.375f));
 		modelOp = glm::rotate(modelOp, glm::radians(rotDedo02), glm::vec3(0.0f, 0.0f, 1.0f));
 		refC = modelOp = glm::translate(modelOp, glm::vec3(0.5f / 2.0f, 0.0f, 0.0f));
 		modelOp = glm::scale(modelOp, glm::vec3(0.5f, 0.3f, 0.25f));
 		myShader.setMat4("model", modelOp);
 		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
-		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de C
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de I
 
 		modelOp = glm::translate(refC, glm::vec3(0.75f/2.0f, 0.0f, 0.0f)); 
 		modelOp = glm::rotate(modelOp, glm::radians(rotDedo02), glm::vec3(0.0f, 0.0f, 1.0f));
@@ -255,7 +256,39 @@ int main()
 		modelOp = glm::scale(modelOp, glm::vec3(0.75f, 0.3f, 0.25f));
 		myShader.setMat4("model", modelOp);
 		myShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
-		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de f
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de J
+
+		modelOp = glm::translate(refB, glm::vec3(2.5f / 2.0f, 0.5f - (0.3f / 2.0f), 0.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(rotDedo03), glm::vec3(0.0f, 0.0f, 1.0f));
+		refG = modelOp = glm::translate(modelOp, glm::vec3(0.5f / 2.0f, 0.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.5f, 0.3f, 0.25f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de G
+
+		modelOp = glm::translate(refG, glm::vec3(0.75f / 2.0f, 0.0f, 0.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(rotDedo03), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::translate(modelOp, glm::vec3(0.25f, 0.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.75f, 0.3f, 0.25f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de H
+
+		modelOp = glm::translate(refB, glm::vec3(2.5f / 2.0f, 0.5f - (0.3f / 2.0f), 0.375f)); //distancia entre los dedos: 0.125z
+		modelOp = glm::rotate(modelOp, glm::radians(rotDedo04), glm::vec3(0.0f, 0.0f, 1.0f));
+		refC = modelOp = glm::translate(modelOp, glm::vec3(0.5f / 2.0f, 0.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.5f, 0.3f, 0.25f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(1.0f, 1.0f, 1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de C
+
+		modelOp = glm::translate(refC, glm::vec3(0.75f / 2.0f, 0.0f, 0.0f));
+		modelOp = glm::rotate(modelOp, glm::radians(rotDedo04), glm::vec3(0.0f, 0.0f, 1.0f));
+		modelOp = glm::translate(modelOp, glm::vec3(0.25f, 0.0f, 0.0f));
+		modelOp = glm::scale(modelOp, glm::vec3(0.75f, 0.3f, 0.25f));
+		myShader.setMat4("model", modelOp);
+		myShader.setVec3("aColor", glm::vec3(0.0f, 1.0f, 1.0f));
+		glDrawArrays(GL_TRIANGLES, 0, 36);	//Dibujo de D
 
 		glBindVertexArray(0);
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -272,10 +305,10 @@ int main()
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
-void my_input(GLFWwindow *window)
+void my_input(GLFWwindow* window)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)  //GLFW_RELEASE
-        glfwSetWindowShouldClose(window, true);
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)  //GLFW_RELEASE
+		glfwSetWindowShouldClose(window, true);
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 		movX += 0.01f;
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
@@ -287,7 +320,7 @@ void my_input(GLFWwindow *window)
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		movZ -= 0.01f;
 	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		movZ += 0.5f;
+		movZ += 0.1f;
 	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
 		rotY += 0.5f;
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
@@ -302,26 +335,39 @@ void my_input(GLFWwindow *window)
 		if (rotHombro <= 90)
 			rotHombro += 0.5f;
 	}
-	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS && -120 < rotHombro) { // otra forma de hacerlo 
-		if(rotHombro >= -120)
+	if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) { // otra forma de hacerlo 
+		if (rotHombro >= -120)
 			rotHombro -= 0.5f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_T) == GLFW_PRESS) {
-		if(-100 > rotCodo)
+		if (rotCodo >= -100)
 			rotCodo -= 0.5f;
 	}
 	if (glfwGetKey(window, GLFW_KEY_G) == GLFW_PRESS) {
-		if (2 > rotCodo)
+		if (rotCodo <= 2)
 			rotCodo += 0.5;
 	}
-	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS)
+
+	// pulgar
+	if (glfwGetKey(window, GLFW_KEY_Y) == GLFW_PRESS && rotDedo01 <= 80)
 		rotDedo01 += 0.5f;
-	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS)
+	if (glfwGetKey(window, GLFW_KEY_H) == GLFW_PRESS && rotDedo01 >= 0)
 		rotDedo01 -= 0.5f;
-	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS && rotDedo <= 0)
+	//Dedos L to R 
+	if (glfwGetKey(window, GLFW_KEY_U) == GLFW_PRESS && rotDedo02 <= 0)
 		rotDedo02 += 0.5f;
 	if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS && rotDedo02 >= -50)
 		rotDedo02 -= 0.5f;
+
+	if (glfwGetKey(window, GLFW_KEY_I) == GLFW_PRESS && rotDedo03 <= 0)
+		rotDedo03 += 0.5f;
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS && rotDedo03 >= -50)
+		rotDedo03 -= 0.5f;
+
+	if (glfwGetKey(window, GLFW_KEY_O) == GLFW_PRESS && rotDedo04 <= 0)
+		rotDedo04 += 0.5f;
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS && rotDedo04 >= -50)
+		rotDedo04 -= 0.5f;
 }
 
 // glfw: whenever the window size changed (by OS or user resize) this callback function executes
