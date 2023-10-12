@@ -1,0 +1,134 @@
+# 3ds Max Wavefront OBJ Exporter v0.99 - (c)2007 guruware
+# File Created: 11.10.2023 18:30:03
+
+newmtl black_uniform
+	Kd 0.4281 0.4202 0.4829
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+
+newmtl vertex_color
+	Kd 0.2515 0.2515 0.2515
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+
+newmtl GR_Yaris_Carbon
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+	map_Kd C:\Users\joshu\Downloads\BMW_M8_Race_Car\Carbon_Fiber_Albedo.png
+
+newmtl M8_Decals
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+	map_Kd C:\Users\joshu\Downloads\BMW_M8_Race_Car\BMW_M8_GTE_Decals.png
+
+newmtl glass
+	Kd 0.0000 0.0000 0.0000
+	Ks 0.0000 0.0000 0.0000
+	Tr 1.0000
+	d 0.0000
+	Tf 1.0000 1.0000 1.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+
+newmtl vertex_color_1
+	Kd 0.2515 0.2515 0.2515
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+
+newmtl BMW_M8_Mat
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+	map_Kd C:\Users\joshu\Downloads\BMW_M8_Race_Car\M8_Combined_Albedo.png
+
+newmtl vertex_color_2
+	Kd 0.2515 0.2515 0.2515
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+
+newmtl M_Tire_Max
+	Kd 1.0000 1.0000 1.0000
+	Ks 0.0000 0.0000 0.0000
+	Tr 0.0000
+	d 1.0000
+	Tf 0.0000 0.0000 0.0000
+	Pr 0.0000
+	Pm 0.0000
+	Pc 0.0000
+	Pcr 0.0000
+	Ni 1.5200
+	Ke 0.0000 0.0000 0.0000
+	illum 2
+	map_Kd -bm 0.0000 Map__7_Mask.tga
+	bump C:\Users\joshu\Downloads\BMW_M8_Race_Car\Shared_Tire_Race01_Low_N.png
+	map_bump C:\Users\joshu\Downloads\BMW_M8_Race_Car\Shared_Tire_Race01_Low_N.png

@@ -282,6 +282,7 @@ int main()
 	Model casaDoll("resources/objects/casa/DollHouse.obj");
 	Model casaBrujas("resources/objects/casaBrujas/Brujas.obj");
 	Model cuboJoshua("resources/objects/CuboJoshua/cuboJoshua.obj");
+	Model humano("resources/objects/Textures1024/Obj/Human.obj");
 	
 	//Bloque que carga modelos con animación ModelAnim | Se recomienda el formato ".dae"
 	ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
@@ -413,6 +414,11 @@ int main()
 		model = glm::scale(model, glm::vec3(2.5f));
 		staticShader.setMat4("model",model);
 		casaBrujas.Draw(staticShader);
+
+		model = glm::translate(glm::mat4(1.0f), glm::vec3(-275.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f));
+		staticShader.setMat4("model", model);
+		humano.Draw(staticShader);
 
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(-175.0f, 0.0f, 90.0f));
 		model = glm::scale(model, glm::vec3(1.0f));
