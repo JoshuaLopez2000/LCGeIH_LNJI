@@ -352,8 +352,8 @@ int main()
 		//Setup Advanced Lights
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f, 0.0f, 0.0f)); // dentro del escenario existe la iluminación y tiende hacia el color blanco | Si configuramos en 0 la componente ambiental entonces las menos iluminadas tienden a negro | RGB segun cual sea más grande tiende hacia el color
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f)); 
+		staticShader.setVec3("dirLight.ambient", glm::vec3(0.6f,0.6f, 0.6f)); // dentro del escenario existe la iluminación y tiende hacia el color blanco | Si configuramos en 0 la componente ambiental entonces las menos iluminadas tienden a negro | RGB segun cual sea más grande tiende hacia el color
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.6f, 0.6f, 0.6f)); 
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f)); // Tiene que ver con el brillo que refleja
 
 		staticShader.setVec3("pointLight[0].position", lightPosition);
