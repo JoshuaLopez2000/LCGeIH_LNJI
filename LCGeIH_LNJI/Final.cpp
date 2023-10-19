@@ -1,5 +1,5 @@
 ﻿/*---------------------------------------------------------*/
-/* ----------------  Práctica 7                 -----------*/
+/* ----------------  Práctica 8                 -----------*/
 /*-----------------    2024-1   ---------------------------*/
 /*------------- Alumno: López Nava Joshua Ivan-------------*/
 /*------------- No. Cuenta: 317309733       ---------------*/
@@ -82,8 +82,15 @@ glm::vec3 ambientColor = diffuseColor * glm::vec3(0.75f);
 // posiciones
 float	movAuto_x = 0.0f,
 		movAuto_z = 0.0f,
+		movAuto_y = 0.0f,
 		orienta = 0.0f;
 bool	animacion = false,
+		reversa = true,
+		subeCarro = false,
+		recorridoCarro1 = false,
+		recorridoCarro2 = false,
+		recorridoCarro3 = false,
+		recorridoCarro4 = false,
 		recorrido1 = true,
 		recorrido2 = false,
 		recorrido3 = false,
@@ -224,7 +231,72 @@ void animate(void) //animaciones automaticas mediante codigo
 	//Vehículo
 	if (animacion)
 	{
-		movAuto_z += 3.0f;
+		/*if (movAuto_z < 200.0f)
+		movAuto_z += 3.0f;*/
+		
+		/*
+		if (movAuto_z >= 200.0f) {
+			//animacion = false;
+			animacion == false;
+			reversa = true;
+		}
+		else if(reversa == false){
+			movAuto_z += 3.0f;
+		}
+		if (reversa && animacion) {
+			if (movAuto_z <= 0.0f) {
+				animacion = false;
+				reversa = false;
+			}
+			else if (animacion == true)
+				movAuto_z -= 3.0f;
+		}
+		*/
+		if (reversa) {
+			if (movAuto_z <= -170) {
+				reversa = false;
+				recorridoCarro1 = true;
+			}
+			else {
+				movAuto_z -= 3.0f;
+			}
+		}
+		else if (recorridoCarro1) {
+			if (movAuto_y >= 200.5) {
+				recorridoCarro1 = false;
+				recorridoCarro2 = true;
+			}
+			else {
+				movAuto_y += 3.0f;
+			}
+		}
+		else if (recorridoCarro2) {
+			if (movAuto_z >= 410.5f - 170.5f) {
+				recorridoCarro2 = false;
+				recorridoCarro3 = true;
+			}
+			else {
+				movAuto_z += 3.0;
+			}
+		}
+		else if(recorridoCarro3){
+			if (movAuto_y <= 0.0f) {
+				recorridoCarro3 = false;
+				recorridoCarro4 = true;
+			}
+			else {
+				movAuto_y -= 3.0f;
+			}
+		}
+		else if (recorridoCarro4) {
+			if (movAuto_z >= 410.5f + 300.0f) {
+				recorridoCarro4 = false;
+				animacion = false;
+			}
+			else {
+				movAuto_z += 3.0f;
+			}
+		}
 	}
 }
 
@@ -325,7 +397,7 @@ int main()
 	Model casaDoll("resources/objects/casa/DollHouse.obj");
 	Model casaBrujas("resources/objects/casaBrujas/Brujas.obj");
 	Model cuboJoshua("resources/objects/CuboJoshua/cuboJoshua.obj");
-	Model humano("resources/objects/Textures1024/Obj/Human.obj");
+	Model humano("resources/objects/Textures1024/Human.obj");
 	
 	//Bloque que carga modelos con animación ModelAnim | Se recomienda el formato ".dae"
 	ModelAnim animacionPersonaje("resources/objects/Personaje1/PersonajeBrazo.dae");
@@ -372,9 +444,9 @@ int main()
 		//Setup Advanced Lights
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f,0.0f, 0.0f)); // dentro del escenario existe la iluminación y tiende hacia el color blanco | Si configuramos en 0 la componente ambiental entonces las menos iluminadas tienden a negro | RGB segun cual sea más grande tiende hacia el color
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f)); 
-		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f)); // Tiene que ver con el brillo que refleja
+		staticShader.setVec3("dirLight.ambient", glm::vec3(0.7f,0.7f, 0.7f)); // dentro del escenario existe la iluminación y tiende hacia el color blanco | Si configuramos en 0 la componente ambiental entonces las menos iluminadas tienden a negro | RGB segun cual sea más grande tiende hacia el color
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.4f, 0.4f, 0.4f)); 
+		staticShader.setVec3("dirLight.specular", glm::vec3(0.4f, 0.4f, 0.4f)); // Tiene que ver con el brillo que refleja
 
 		staticShader.setVec3("pointLight[0].position", lightPosition);
 		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
@@ -519,7 +591,7 @@ int main()
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, -1.0f, movAuto_z));
+		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, -1.0f + movAuto_y, movAuto_z));
 		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.6f, 0.0f));
@@ -690,10 +762,21 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 			luzAzul = false;
 		}
 	}
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+		movAuto_z = 0.0f;
+		animacion = false;
+		reversa = true;
+		subeCarro = false;
+		recorridoCarro1 = false;
+		recorridoCarro2 = false;
+		recorridoCarro3 = false;
+		recorridoCarro4 = false;
+	}
+
 
 	//Car animation
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
-		animacion ^= true;
+		animacion ^= true; //cambia de verdadero a falso, es un xor
 
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
