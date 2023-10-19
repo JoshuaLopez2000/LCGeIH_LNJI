@@ -43,6 +43,7 @@ GLFWmonitor *monitors;
 
 void getResolution(void);
 
+///////////// Variables
 // camera
 Camera camera(glm::vec3(0.0f, 10.0f, 90.0f));
 float MovementSpeed = 0.1f;
@@ -60,13 +61,19 @@ double	deltaTime = 0.0f,
 glm::vec3 lightPosition(0.0f, 4.0f, -10.0f);
 glm::vec3 lightDirection(0.0f, -1.0f, -1.0f); // cambiar Z hace que los rayos vayan del fondo del escenario hacia nosotros o viceversa
 
+glm::vec3 sol(0.0f, 0.0f, 0.0f);
+
 float	myVar = 0.0f,
 		luzR = 0.0f,
 		luzG = 0.0f,
-		luzB = 0.0f;
+		luzB = 0.0f,
+		azulR = 0.0f,
+		azulG = 0.0f,
+		azulB = 0.0f;
 
-boolean luzE = false;
-
+boolean luzE = false,
+		luzAzul = false;
+//////////////////// 
 //// Light
 glm::vec3 lightColor = glm::vec3(0.7f);
 glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f);
@@ -155,17 +162,30 @@ void animate(void) //animaciones automaticas mediante codigo
 
 	lightPosition.x = 110.0f * sin(myVar);
 	lightPosition.z = 110.0f * cos(myVar);
+	sol.x = 1000.0f * sin(myVar);
+	sol.y = 1000.0f * cos(myVar);
 	myVar += 0.01f; // se modifica para hacerlo más rapido
 
 	if (luzE == true) {
-		luzR = lightPosition.x;
-		luzG = lightPosition.z;
-		luzB = 0.8f;
+		luzR = (lightPosition.x)/2;
+		luzG = (lightPosition.z)/2;
+		luzB = ((lightPosition.x) * -1)/2;
 	}
 	else {
 		luzR = 0.0f;
 		luzG = 0.0f;
 		luzB = 0.0f;
+	}
+
+	if (luzAzul == true) {
+		azulR = 0.2f;
+		azulG = 0.2f;
+		azulB = 0.9f;
+	}
+	else {
+		azulR = 0.0f;
+		azulG = 0.0f;
+		azulB = 0.0f;
 	}
 
 	if (play)
@@ -352,34 +372,42 @@ int main()
 		//Setup Advanced Lights
 		staticShader.setVec3("viewPos", camera.Position);
 		staticShader.setVec3("dirLight.direction", lightDirection);
-		staticShader.setVec3("dirLight.ambient", glm::vec3(0.6f,0.6f, 0.6f)); // dentro del escenario existe la iluminación y tiende hacia el color blanco | Si configuramos en 0 la componente ambiental entonces las menos iluminadas tienden a negro | RGB segun cual sea más grande tiende hacia el color
-		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.6f, 0.6f, 0.6f)); 
+		staticShader.setVec3("dirLight.ambient", glm::vec3(0.0f,0.0f, 0.0f)); // dentro del escenario existe la iluminación y tiende hacia el color blanco | Si configuramos en 0 la componente ambiental entonces las menos iluminadas tienden a negro | RGB segun cual sea más grande tiende hacia el color
+		staticShader.setVec3("dirLight.diffuse", glm::vec3(0.0f, 0.0f, 0.0f)); 
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.0f, 0.0f)); // Tiene que ver con el brillo que refleja
 
 		staticShader.setVec3("pointLight[0].position", lightPosition);
-		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.3f, 0.3f, 0.3f));
-		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(0.8f, 0.8f, 0.8f));
-		staticShader.setVec3("pointLight[0].specular", glm::vec3(0.3f, 0.3f, 0.3f));
+		staticShader.setVec3("pointLight[0].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[0].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[0].specular", glm::vec3(0.0f, 0.0f, 0.0f));
 		//Los tres parametros son atenucación (perdida de intensidad con respecto a la distancia
 		staticShader.setFloat("pointLight[0].constant", 0.08f);// atenuación constante 
 		staticShader.setFloat("pointLight[0].linear", 0.009f); //atenuación lineal | tienen que ver con la distancia
 		staticShader.setFloat("pointLight[0].quadratic", 0.0032f); //potencia que va a tener la luz | entre más pequeño sea mas potente es la fuente de luz
 
 		staticShader.setVec3("pointLight[1].position", glm::vec3(-80.0, 10.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.4f, 0.0f));
+		staticShader.setVec3("pointLight[1].ambient", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setVec3("pointLight[1].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
-		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.2f, 0.0f));
+		staticShader.setVec3("pointLight[1].specular", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setFloat("pointLight[1].constant", 1.0f);
 		staticShader.setFloat("pointLight[1].linear", 0.009f);
 		staticShader.setFloat("pointLight[1].quadratic", 0.0032f);
 
 		staticShader.setVec3("pointLight[2].position", glm::vec3(80.0, 10.0f, 0.0f));
 		staticShader.setVec3("pointLight[2].ambient", glm::vec3(luzR, luzG, luzB));
-		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(0.0f, 0.9f, 0.0f));
-		staticShader.setVec3("pointLight[2].specular", glm::vec3(0.0f, 0.2f, 0.0f));
+		staticShader.setVec3("pointLight[2].diffuse", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setVec3("pointLight[2].specular", glm::vec3(0.0f, 0.0f, 0.0f));
 		staticShader.setFloat("pointLight[2].constant", 0.08f);
 		staticShader.setFloat("pointLight[2].linear", 0.009f);
 		staticShader.setFloat("pointLight[2].quadratic", 0.0032f);
+
+		staticShader.setVec3("pointLight[3].position", glm::vec3(150.0, 20.0f, 150.0f));
+		staticShader.setVec3("pointLight[3].ambient", glm::vec3(azulR, azulG, azulB));
+		staticShader.setVec3("pointLight[3].diffuse", glm::vec3(azulR, azulG, azulB));
+		staticShader.setVec3("pointLight[3].specular", glm::vec3(azulR, azulG, azulB));
+		staticShader.setFloat("pointLight[3].constant", 0.8f);
+		staticShader.setFloat("pointLight[3].linear", 0.009f);
+		staticShader.setFloat("pointLight[3].quadratic", 0.000032f);
 
 		staticShader.setVec3("spotLight[0].position", glm::vec3(camera.Position.x, camera.Position.y, camera.Position.z));
 		staticShader.setVec3("spotLight[0].direction", glm::vec3(camera.Front.x, camera.Front.y, camera.Front.z)); //apunta hacia abajo
@@ -391,6 +419,19 @@ int main()
 		staticShader.setFloat("spotLight[0].constant", 0.0001f);
 		staticShader.setFloat("spotLight[0].linear", 0.000009f);
 		staticShader.setFloat("spotLight[0].quadratic", 0.00005f);
+
+		// Iluminación que simula un atardecer
+
+		staticShader.setVec3("spotLight[1].position", glm::vec3(sol.x, sol.y, sol.z));
+		staticShader.setVec3("spotLight[1].direction", glm::vec3(0.0f,-1.0f, 0.0f)); //apunta hacia abajo
+		staticShader.setVec3("spotLight[1].ambient", glm::vec3(0.9f, 0.9f, 0.9f));
+		staticShader.setVec3("spotLight[1].diffuse", glm::vec3(0.6f, 0.6f, 0.6f));
+		staticShader.setVec3("spotLight[1].specular", glm::vec3(0.0f, 0.0f, 0.0f));
+		staticShader.setFloat("spotLight[1].cutOff", glm::cos(glm::radians(65.0f))); //angulos
+		staticShader.setFloat("spotLight[1].outerCutOff", glm::cos(glm::radians(180.0f))); //difuminación de la luz 
+		staticShader.setFloat("spotLight[1].constant", 0.0001f);
+		staticShader.setFloat("spotLight[1].linear", 0.000009f);
+		staticShader.setFloat("spotLight[1].quadratic", 0.0000032f);
 
 		staticShader.setFloat("material_shininess", 32.0f);
 
@@ -639,6 +680,14 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		}
 		else {
 			luzE = false;
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_B) == GLFW_PRESS) {
+		if (azulR == 0.0f && azulG == 0.0f && azulB == 0.0f) {
+			luzAzul = true;
+		}
+		else {
+			luzAzul = false;
 		}
 	}
 
