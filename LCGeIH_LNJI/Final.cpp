@@ -85,8 +85,8 @@ float	movAuto_x = 0.0f,
 		movAuto_y = 0.0f,
 		orienta = 0.0f;
 bool	animacion = false,
+		animacion2 = false,
 		reversa = true,
-		subeCarro = false,
 		recorridoCarro1 = false,
 		recorridoCarro2 = false,
 		recorridoCarro3 = false,
@@ -95,6 +95,8 @@ bool	animacion = false,
 		recorrido2 = false,
 		recorrido3 = false,
 		recorrido4 = false;
+
+int estadoAuto = 0;
 
 
 //Keyframes (Manipulación y dibujo)
@@ -296,6 +298,73 @@ void animate(void) //animaciones automaticas mediante codigo
 			else {
 				movAuto_z += 3.0f;
 			}
+		}
+	}
+
+	if (animacion2) {
+		/*
+		if (estadoAuto == 0) {
+
+		}
+		else if (estadoAuto == 1) {
+
+		}
+		else if (estadoAuto == 2) {
+
+		}
+		else if (estadoAuto == 3) {
+
+		}
+		else if (estadoAuto == 4) {
+
+		}
+		*/
+		switch (estadoAuto) {
+		case 0:
+			movAuto_z += 3.0f;
+			orienta = 0.0f;
+			if (movAuto_z >= 200)
+				estadoAuto = 6;
+			break;
+		case 1:
+			movAuto_x -= 3.0f;
+			orienta = -90.f;
+			if (movAuto_x <= -250)
+				estadoAuto = 2;
+			break;
+		case 2:
+			movAuto_z -= 3.0f;
+			orienta = 180;
+			if (movAuto_z <= -250)
+				estadoAuto = 3;
+			break;
+		case 3:
+			movAuto_x += 3.0f;
+			orienta = 90;
+			if (movAuto_x >= 0)
+				estadoAuto = 4;
+			break;
+		case 4:
+			movAuto_z += 3.0f;
+			orienta = 0;
+			if (movAuto_z >= 0) {
+				estadoAuto = 0;
+				animacion2 = false;
+			}
+			break;
+		case 6:
+			//calculando la proporcion por medio de la pendiente dify/difx = difx/difz = -250-0/-200-200 = 0.625 Entonces si difz = 1, difx = 0.625
+			movAuto_x -= 0.625f*4.0f;
+			movAuto_z -= 4.0f;
+			//orienta = ?; Por triangulo rectangulo tan = co/ca = 250/400 = 0.625 con tan-1 (0.625) = 32.0054°
+			//tomando en cuenta la referencia 180 + angulo obtenido o -180- angulo obtenido
+			orienta = 212.0054;
+			if (movAuto_x <= -250.0f && movAuto_z <= -200.0f) {
+				estadoAuto = 3;
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }
@@ -590,8 +659,8 @@ int main()
 		// -------------------------------------------------------------------------------------------------------------------------
 		// Carro
 		// -------------------------------------------------------------------------------------------------------------------------
-		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, -1.0f + movAuto_y, movAuto_z));
+		model = glm::rotate(glm::mat4(1.0f), glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // la rotación ocaciona que debamos mover el eje z para avanzar debido a que el modelo fue creado viendo hacia el eje z
+		model = glm::translate(model, glm::vec3(15.0f + movAuto_x, -1.0f + movAuto_y, movAuto_z)); // solo para el carro z es el eje horizontal y x la profundidad
 		tmp = model = glm::rotate(model, glm::radians(orienta), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.1f, 0.1f, 0.1f));
 		staticShader.setVec3("dirLight.specular", glm::vec3(0.0f, 0.6f, 0.0f));
@@ -764,19 +833,26 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 	}
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 		movAuto_z = 0.0f;
+		movAuto_x = 0.0f;
+		movAuto_y = 0.0f;
 		animacion = false;
+		animacion2 = false;
 		reversa = true;
-		subeCarro = false;
 		recorridoCarro1 = false;
 		recorridoCarro2 = false;
 		recorridoCarro3 = false;
 		recorridoCarro4 = false;
+		estadoAuto = 0;
+		orienta = 0;
 	}
 
 
 	//Car animation
 	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
 		animacion ^= true; //cambia de verdadero a falso, es un xor
+
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS)
+		animacion2 ^= true; //cambia de verdadero a falso, es un xor
 
 	//To play KeyFrame animation 
 	if (key == GLFW_KEY_P && action == GLFW_PRESS)
