@@ -1,5 +1,5 @@
 ﻿/*---------------------------------------------------------*/
-/* ----------------  Práctica 8                 -----------*/
+/* ----------------  Práctica Animación KeyFrames ---------*/
 /*-----------------    2024-1   ---------------------------*/
 /*------------- Alumno: López Nava Joshua Ivan-------------*/
 /*------------- No. Cuenta: 317309733       ---------------*/
@@ -100,18 +100,26 @@ int estadoAuto = 0;
 
 
 //Keyframes (Manipulación y dibujo)
-float	posX = 0.0f,
-		posY = 0.0f,
+float	posX = 0.0f, //variables de manipulación y dibujo
+		posMonitoY = 0.0f,
 		posZ = 0.0f,
 		rotRodIzq = 0.0f,
-		giroMonito = 0.0f;
-float	incX = 0.0f,
+		rotRodDer = 0.0f,
+		giroMonito = 0.0f,
+		giroBrazoIzq = 0.0f,
+		giroBrazoDer = 0.0f,
+		giroCabeza = 0.0f;
+float	incX = 0.0f, // almacena las variables que determinan el incremento
 		incY = 0.0f,
 		incZ = 0.0f,
-		rotInc = 0.0f,
-		giroMonitoInc = 0.0f;
+		rotRodIzqInc = 0.0f,
+		rotRodDerInc = 0.0f,
+		giroMonitoInc = 0.0f,
+		giroBrazoIzqInc = 0.0f,
+		giroBrazoDerInc = 0.0f,
+		giroCabezaInc = 0.0f;
 
-#define MAX_FRAMES 9
+#define MAX_FRAMES 20
 int i_max_steps = 60;
 int i_curr_steps = 0;
 typedef struct _frame
@@ -121,7 +129,11 @@ typedef struct _frame
 	float posY;		//Variable para PosicionY
 	float posZ;		//Variable para PosicionZ
 	float rotRodIzq;
+	float rotRodDer;
 	float giroMonito;
+	float giroBrazoIzq;
+	float giroBrazoDer;
+	float giroCabeza;
 
 }FRAME;
 
@@ -136,11 +148,18 @@ void saveFrame(void)
 	std::cout << "Frame Index = " << FrameIndex << std::endl;
 
 	KeyFrame[FrameIndex].posX = posX;
-	KeyFrame[FrameIndex].posY = posY;
+	KeyFrame[FrameIndex].posY = posMonitoY;
 	KeyFrame[FrameIndex].posZ = posZ;
 
 	KeyFrame[FrameIndex].rotRodIzq = rotRodIzq;
+	KeyFrame[FrameIndex].rotRodDer = rotRodDer;
 	KeyFrame[FrameIndex].giroMonito = giroMonito;
+	KeyFrame[FrameIndex].giroBrazoIzq = giroBrazoIzq;
+	KeyFrame[FrameIndex].giroBrazoDer = giroBrazoDer;
+	KeyFrame[FrameIndex].giroCabeza = giroCabeza;
+
+	std::cout << "Posicion X = " << posX << std::endl;
+	std::cout << "Posicion Z = " << posZ << std::endl;
 
 	FrameIndex++;
 }
@@ -148,11 +167,13 @@ void saveFrame(void)
 void resetElements(void)
 {
 	posX = KeyFrame[0].posX;
-	posY = KeyFrame[0].posY;
+	posMonitoY = KeyFrame[0].posY;
 	posZ = KeyFrame[0].posZ;
 
 	rotRodIzq = KeyFrame[0].rotRodIzq;
 	giroMonito = KeyFrame[0].giroMonito;
+	giroBrazoIzq = KeyFrame[0].giroBrazoIzq;
+	giroCabeza = KeyFrame[0].giroCabeza;
 }
 
 void interpolation(void)
@@ -161,9 +182,10 @@ void interpolation(void)
 	incY = (KeyFrame[playIndex + 1].posY - KeyFrame[playIndex].posY) / i_max_steps;
 	incZ = (KeyFrame[playIndex + 1].posZ - KeyFrame[playIndex].posZ) / i_max_steps;
 
-	rotInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
-	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps;
-
+	rotRodIzqInc = (KeyFrame[playIndex + 1].rotRodIzq - KeyFrame[playIndex].rotRodIzq) / i_max_steps;
+	giroMonitoInc = (KeyFrame[playIndex + 1].giroMonito - KeyFrame[playIndex].giroMonito) / i_max_steps; //i_max_steps cantidad de cuadros intermedios
+	giroBrazoIzqInc = (KeyFrame[playIndex + 1].giroBrazoIzq - KeyFrame[playIndex].giroBrazoIzq) / i_max_steps;	//incremento | playIndex indica cual es el cuadro clave inicial de cada una de las transiciones
+	giroCabezaInc = (KeyFrame[playIndex + 1].giroCabeza - KeyFrame[playIndex].giroCabeza) / i_max_steps;
 }
 
 void animate(void) //animaciones automaticas mediante codigo
@@ -220,11 +242,16 @@ void animate(void) //animaciones automaticas mediante codigo
 		{
 			//Draw animation
 			posX += incX;
-			posY += incY;
+			posMonitoY += incY;
 			posZ += incZ;
 
-			rotRodIzq += rotInc;
+			rotRodIzq += rotRodIzqInc;
+			rotRodDer += rotRodDerInc;
 			giroMonito += giroMonitoInc;
+			giroBrazoIzq += giroBrazoIzqInc;
+			giroBrazoDer += giroBrazoDerInc;
+			giroCabeza += giroCabezaInc;
+
 
 			i_curr_steps++;
 		}
@@ -478,13 +505,35 @@ int main()
 	//Inicialización de KeyFrames
 	for (int i = 0; i < MAX_FRAMES; i++)
 	{
-		KeyFrame[i].posX = 0;
-		KeyFrame[i].posY = 0;
-		KeyFrame[i].posZ = 0;
-		KeyFrame[i].rotRodIzq = 0;
-		KeyFrame[i].giroMonito = 0;
+		KeyFrame[i].posX = 0.0f;
+		KeyFrame[i].posY = 0.0f;
+		KeyFrame[i].posZ = 0.0f;
+		KeyFrame[i].rotRodIzq = 0.0f;
+		KeyFrame[i].giroMonito = 0.0f;
+		KeyFrame[i].giroBrazoIzq = 0.0f;
 	}
+	/*
+	KeyFrame[0].posX = 0.0f;
+	KeyFrame[0].posY = 0.0f;
+	KeyFrame[0].posZ = 0.0f;
+	KeyFrame[0].rotRodIzq = 0.0f;
+	KeyFrame[0].giroMonito = 0.0f;
+	KeyFrame[0].giroBrazoIzq = 0.0f;
 
+	KeyFrame[1].posX = 0.0f;
+	KeyFrame[1].posY = 40.0f;
+	KeyFrame[1].posZ = 0.0f;
+	KeyFrame[1].rotRodIzq = 0.0f;
+	KeyFrame[1].giroMonito = 0.0f;
+	KeyFrame[1].giroBrazoIzq = -90.0f;
+
+	KeyFrame[2].posX = 50.0f;
+	KeyFrame[2].posY = 0.0f;
+	KeyFrame[2].posZ = 0.0f;
+	KeyFrame[2].rotRodIzq = 90.0f;
+	KeyFrame[2].giroMonito = 90.0f;
+	KeyFrame[2].giroBrazoIzq = 0.0f;
+	*/
 	// draw in wireframe
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -692,7 +741,7 @@ int main()
 		// Personaje
 		// -------------------------------------------------------------------------------------------------------------------------
 		model = glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0));
-		model = glm::translate(model, glm::vec3(posX, posY, posZ));
+		model = glm::translate(model, glm::vec3(posX, posMonitoY, posZ));
 		tmp = model = glm::rotate(model, glm::radians(giroMonito), glm::vec3(0.0f, 1.0f, 0.0));
 		staticShader.setMat4("model", model);
 		torso.Draw(staticShader);
@@ -711,7 +760,7 @@ int main()
 
 		//Pierna Izq
 		model = glm::translate(tmp, glm::vec3(0.5f, 0.0f, -0.1f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(rotRodIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		piernaIzq.Draw(staticShader);
 
@@ -723,20 +772,20 @@ int main()
 		//Brazo derecho
 		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(-0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(-giroBrazoIzq), glm::vec3(1.0f, 0.0f, 0.0f));
 		staticShader.setMat4("model", model);
 		brazoDer.Draw(staticShader);
 
 		//Brazo izquierdo
 		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::translate(model, glm::vec3(0.75f, 2.5f, 0));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, glm::radians(giroBrazoIzq), glm::vec3(1.0f, 0.0f, 0.0f)); // en radians se cambia el angulo por la variable de rotación
 		staticShader.setMat4("model", model);
 		brazoIzq.Draw(staticShader);
 
 		//Cabeza
 		model = glm::translate(tmp, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::rotate(model, glm::radians(0.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::rotate(model, glm::radians(giroCabeza), glm::vec3(1.0f, 0.0f, 0.0));
 		model = glm::translate(model, glm::vec3(0.0f, 2.5f, 0));
 		staticShader.setMat4("model", model);
 		cabeza.Draw(staticShader);
@@ -845,6 +894,20 @@ void my_input(GLFWwindow *window, int key, int scancode, int action, int mode)
 		estadoAuto = 0;
 		orienta = 0;
 	}
+
+	if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)
+		giroBrazoIzq += 3.0;
+	if (glfwGetKey(window, GLFW_KEY_9) == GLFW_PRESS)
+		giroBrazoIzq -= 3.0;
+	if (glfwGetKey(window, GLFW_KEY_8) == GLFW_PRESS)
+		giroCabeza += 3.0;
+	if (glfwGetKey(window, GLFW_KEY_7) == GLFW_PRESS)
+		giroCabeza -= 3.0;
+	if (glfwGetKey(window, GLFW_KEY_6) == GLFW_PRESS)
+		posMonitoY += 3.0;
+	if (glfwGetKey(window, GLFW_KEY_5) == GLFW_PRESS)
+		posMonitoY -= 3.0;
+
 
 
 	//Car animation
